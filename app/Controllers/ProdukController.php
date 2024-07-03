@@ -9,6 +9,10 @@ class ProdukController extends RestfulController
 {
     public function create()
     {
+        if (!$this->checkAccess()) {
+            return $this->responseHasil(403, false, ['message' => 'Forbidden Access']);
+        }
+
         $data = [
             'kode_produk' => $this->request->getVar('kode_produk'),
             'nama_produk' => $this->request->getVar('nama_produk'),
@@ -25,10 +29,6 @@ class ProdukController extends RestfulController
 
     public function list()
     {
-        if (!$this->checkAccess()) {
-            return $this->responseHasil(403, false, ['message' => 'Forbidden Access']);
-        }
-
         $model = new MProduk();
         $produk = $model->findAll();
 
@@ -45,6 +45,10 @@ class ProdukController extends RestfulController
 
     public function ubah($id)
     {
+        if (!$this->checkAccess()) {
+            return $this->responseHasil(403, false, ['message' => 'Forbidden Access']);
+        }
+
         $data = [
             'kode_produk' => $this->request->getVar('kode_produk'),
             'nama_produk' => $this->request->getVar('nama_produk'),
@@ -59,7 +63,12 @@ class ProdukController extends RestfulController
         return $this->responseHasil (200, true, $produk);
     }
 
-    public function hapus($id) {
+    public function hapus($id)
+    {
+        if (!$this->checkAccess()) {
+            return $this->responseHasil(403, false, ['message' => 'Forbidden Access']);
+        }
+
         $model = new MProduk();
         $produk = $model->delete($id);
 
