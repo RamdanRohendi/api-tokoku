@@ -18,7 +18,7 @@ class LoginController extends RestfulController
         if (!$member) {
             return $this->responseHasil(400, false, 'Email tidak ditemukan');
         }
-        
+
         if (!password_verify($password, $member['password'])) {
             return $this->responseHasil(400, false, 'Password tidak valid');
         }
@@ -44,6 +44,10 @@ class LoginController extends RestfulController
 
     public function logout()
     {
+        if (!$this->checkAccess()) {
+            return $this->responseHasil(403, false, ['message' => 'Forbidden Access']);
+        }
+
         $auth_key = explode(' ', $this->request->getHeaderLine('Authorization'));
         $token = $auth_key[count($auth_key)-1];
 
@@ -52,7 +56,7 @@ class LoginController extends RestfulController
         $login = new MLogin();
         $data = $login->where('member_id', $id)->where('auth_key', $token)->delete();
 
-        return $this->responseHasil (200, true, $data);
+        return $this->responseHasil(200, true, $data);
     }
 
     public function RandomString($length = 100)

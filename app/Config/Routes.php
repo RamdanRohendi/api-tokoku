@@ -10,6 +10,10 @@ $routes->post('/registrasi', 'RegistrasiController::registrasi');
 $routes->post('/login', 'LoginController::login');
 $routes->post('/logout', 'LoginController::logout');
 
+$routes->get('/profile', 'ProfileController::profile');
+$routes->post('/profile', 'ProfileController::ubah');
+$routes->delete('/profile', 'ProfileController::hapus');
+
 $routes->group('produk', function ($routes) {
     $routes->post('/', 'ProdukController::create');
     $routes->get('/', 'ProdukController::list');
